@@ -3,9 +3,6 @@
 namespace App\Repositories\User;
 
 use App\User;
-use App\Exceptions\CustomResponse;
-use Carbon\Carbon;
-use JWTAuth;
 
 class UserRepository implements UserInterface
 {
@@ -18,44 +15,16 @@ class UserRepository implements UserInterface
 
     public function register($request)
     {
-//        $request['gov_id'] = md5($request['gov_id']);
-//        dd($request);
-//        $user = User::create($request);
-
-        $user = User::create([
+        return User::create([
             'email' => $request['email'],
             'gov_id' => md5($request['gov_id']),
             'name' => $request['name'],
             'phone' => $request['phone']
             ]);
-
-        $token = JWTAuth::fromUser($user);
-
-        return CustomResponse::response($token, 'data');
     }
 
-    public function login($credentials, $token)
+    public function update($user, $fields)
     {
-//        dd($credentials);
-        return CustomResponse::response($token, 'data');
+        $user->update($fields);
     }
-
-    public function updateNotificationStatus($user)
-    {
-        $user ->update(['accepts_notifications' => Carbon::now()]);
-
-        return CustomResponse::response();
-    }
-
-    public function getUser($user)
-    {
-        return CustomResponse::response($user);
-    }
-
-//    public function getHelp()
-//    {
-//
-//    }
-
-
 }

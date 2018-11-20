@@ -3,11 +3,12 @@
 namespace App\Services\User;
 
 
+use App\Http\Controllers\ApiResponseController;
 use App\Repositories\User\UserInterface;
 use App\User;
-use App\Exceptions\CustomResponse;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
-use JWTAuth;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UserService
 {
@@ -21,82 +22,94 @@ class UserService
     public function login()
     {
         $credentials = request(['email', 'gov_id']);
-
         $credentials['gov_id'] = md5($credentials['gov_id']);
 
-        $user = new User();
+        $this->validateLogin($credentials);
 
-        $user->where([
+        $user = User::where([
             'email' => $credentials['email'], 'gov_id' => $credentials['gov_id']
-        ])->get();
+        ])->first();
 
         if ($user)
         {
-            if (!$token = JWTAuth::fromUser($user))
+            $token = JWTAuth::fromUser($user);
 
-            return $this->userRepo->login($credentials, $token);
+            return ApiResponseController::success($token);
         }
 
-        return CustomResponse::response('INVALID_CREDENTIALS');
+        return ApiResponseController::error('INVALID_CREDENTIALS');
     }
 
     public function register()
     {
-        $request = request(['email', 'gov_id', 'name', 'phone']);
+        $request = request(['email', 'gov_id', 'name', 'phone', 'accepts_notifications']);
+        $this->validateRegister($request);
+        $user = $this->userRepo->register($request);
+        $token = JWTAuth::fromUser($user);
 
-        $validator = Validator::make($request, [
-            'email' => 'required|string|max:255|unique:users',
-            'gov_id' => 'required',
-            'name' => 'required|string|max:255',
-            'phone' => 'required'
-        ]);
-
-//        dd($validator);
-
-        if ($validator->fails()) {
-            return CustomResponse::response('AUTH_ERROR');
-        }
-
-        return $this->userRepo->register($request);
+        return ApiResponseController::success($token);
     }
 
     public function getAuthenticatedUser()
     {
-        try {
 
-            if (!$user = JWTAuth::ParseToken()->authenticate())
-            {
-                return CustomResponse::response('USER_NOT_FOUND');
-            }
+        $user = JWTAuth::ParseToken()->authenticate();
 
-        } catch (\Exception $exception) {
-
-            return CustomResponse::response();
-        }
-
-        return $this->userRepo->getUser($user);
+        return ApiResponseController::success($user);
     }
 
     public function updateNotificationStatus()
     {
         $request = request(['status', 'push_notification_token']);
 
-        $validator = Validator::make($request, ['status' => 'required'|'boolean']);
-
-        if ($validator->fails()) {
-            return CustomResponse::response();
-        }
+        $this->validateUpdateNotifications($request);
 
         if ($request['status'])
         {
-            if (!$user = JWTAuth::ParseToken()->authenticate())
-            {
-                return CustomResponse::response('USER_NOT_FOUND');
-            }
+            $user = JWTAuth::ParseToken()->authenticate();
 
-            return $this->userRepo->updateNotificationStatus($user);
+            $this->userRepo->update($user, ['accepts_notifications' => Carbon::now()]);
+
+            return ApiResponseController::success('UPDATED');
         }
 
-        return $this->userRepo->updateNotificationStatus($request);
+        return ApiResponseController::error();
+    }
+
+    private function validateRegister($request)
+    {
+        $validator = Validator::make($request, [
+            'email' => 'required|string|max:75|unique:users',
+            'gov_id' => 'required|unique:users',
+            'name' => 'required|string|max:25',
+            'phone' => 'required|numeric|unique:users|max:12',
+            'accepts_notifications' => 'nullable|date'
+        ]);
+
+        if ($validator->fails()) {
+            return ApiResponseController::error();
+        }
+    }
+
+    private function validateLogin($request)
+    {
+        $validator = Validator::make($request, [
+            'email' => 'required|string|max:75|unique:users',
+            'gov_id' => 'required|unique:users'
+        ]);
+
+        if ($validator->fails())
+        {
+            return ApiResponseController::error();
+        }
+    }
+
+    private function validateUpdateNotifications($request)
+    {
+        $validator = Validator::make($request, ['status' => 'required|boolean', 'push_notification_token' => 'required']);
+        if ($validator->fails())
+        {
+            return ApiResponseController::error();
+        }
     }
 }

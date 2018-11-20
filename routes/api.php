@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,7 +15,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/auth/register', 'SessionController@register');
 Route::post('/auth/login', 'SessionController@login');
-Route::get('/auth/user', 'SessionController@getAuthenticatedUser');
-Route::post('/auth/update-notification-status', 'SessionController@updateNotificationStatus');
-Route::get('/questions-answers/login', 'GeneralDataController@getQuestionAnswersLogin');
-Route::get('/questions-answers/help', 'GeneralDataController@getQuestionAnswersHelp');
+
+Route::get('/terms', 'SessionController@getTerms');
+Route::get('/questions-answers/help', 'QuestionsAndAnswers@getQuestionsAnswersGuest');
+
+Route::middleware('jwt')->group(function () {
+    Route::get('/auth/user', 'SessionController@getAuthenticatedUser');
+    Route::post('/auth/update-notification-status', 'SessionController@updateNotificationStatus');
+    Route::get('/questions-answers/login', 'QuestionsAndAnswers@getQuestionsAnswersUser');
+});

@@ -1,5 +1,12 @@
 <?php
 
+use App\Repositories\GuestHelp\GuestHelpRepositoryServiceProvider;
+use App\Repositories\UserHelp\UserHelpRepositoryServiceProvider;
+use App\Services\GuestHelp\GuestHelpFacade;
+use App\Services\GuestHelp\GuestHelpServiceServiceProvider;
+use App\Services\UserHelp\UserHelpFacade;
+use App\Services\UserHelp\UserHelpServiceServiceProvider;
+
 return [
 
     /*
@@ -174,7 +181,11 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Repositories\User\UserRepositoryServiceProvider::class,
-        App\Services\User\UserServiceServiceProvider::class
+        App\Services\User\UserServiceServiceProvider::class,
+        GuestHelpRepositoryServiceProvider::class,
+        GuestHelpServiceServiceProvider::class,
+        UserHelpRepositoryServiceProvider::class,
+        UserHelpServiceServiceProvider::class,
 
     ],
 
@@ -226,8 +237,9 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
         'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
-        'UserFacade' => App\Services\User\UserFacade::class
-
+        'UserFacade' => App\Services\User\UserFacade::class,
+        'UserHelpFacade' => UserHelpFacade::class,
+        'GuestHelpFacade' => GuestHelpFacade::class
     ],
 
 ];

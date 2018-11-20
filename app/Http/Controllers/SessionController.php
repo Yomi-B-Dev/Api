@@ -2,27 +2,32 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\User\UserService;
+use App\Services\User\UserFacade;
 
-class SessionController extends Controller
+class SessionController extends ApiResponseController
 {
-    public function register(UserService $userService)
+    public function register()
     {
-        return $userService->register();
+        return UserFacade::register();
     }
 
-    public function login(UserService $userService)
+    public function login()
     {
-        return $userService->login();
+        return UserFacade::login();
     }
 
-    public function getAuthenticatedUser(UserService $userService)
+    public function getAuthenticatedUser()
     {
-        return $userService->getAuthenticatedUser();
+        return UserFacade::getAuthenticatedUser();
     }
 
-    public function updateNotificationStatus(UserService $userService)
+    public function updateNotificationStatus()
     {
-        return $userService->updateNotificationStatus();
+        return UserFacade::updateNotificationStatus();
+    }
+
+    public function getTerms()
+    {
+        self::success('Terms of use...');
     }
 }
