@@ -21,6 +21,7 @@ Route::get('/questions-answers/help', 'QuestionsAndAnswersController@getQuestion
 
 //Route::post('/delete-token', '');
 
+//Route::group(['middleware' => 'jwt', 'prefix' => 'auth', 'namespace'])
 Route::middleware('jwt')->group(function () {
     Route::get('/auth/user', 'SessionController@getAuthenticatedUser');
     Route::post('/auth/update-notification-status', 'SessionController@updateNotificationStatus');
@@ -28,6 +29,18 @@ Route::middleware('jwt')->group(function () {
     Route::get('/questions-answers/login', 'QuestionsAndAnswersController@getQuestionsAnswersUser');
 
     Route::post('/post/report', 'PostController@get');
+
+
+
+
+
+
+
+
+
+
+
+
 //    Route::get('/post/get-by-user-id?page={id}', ''); // 10 posts per page
 //    Route::get('/post/get-by-user-id', ''); // All posts
 //    Route::post('/post/update-post/', '');

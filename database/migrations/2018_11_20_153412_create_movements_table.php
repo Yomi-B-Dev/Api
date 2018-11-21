@@ -27,6 +27,6 @@ class CreateMovementsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('movements');
+//        Schema::dropIfExists('movements');
     }
 }

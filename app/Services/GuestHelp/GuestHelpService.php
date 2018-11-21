@@ -48,7 +48,6 @@ class GuestHelpService
 
         if ($validator->fails())
         {
-            return ApiResponseController::error();
         }
     }
 }

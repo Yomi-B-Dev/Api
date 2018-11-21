@@ -1,4 +1,4 @@
-<?php
+<?
 
 namespace App\Http\Controllers;
 
@@ -8,27 +8,63 @@ class SessionController extends ApiResponseController
 {
     public function register()
     {
-        return $this->jsonResponse(UserFacade::register());
+        $request = request()->all();
+        $validatorErrors = UserFacade::validateRegister($request);
+
+        if ((bool) $validatorErrors) {
+
+            return $this->error($validatorErrors);
+        }
+
+        return $this->success(UserFacade::register($request));
     }
 
     public function login()
     {
-        return $this->jsonResponse(UserFacade::login());
+        $request = request(['email', 'gov_id']);
+        $validatorErrors = UserFacade::validateLogin($request);
+
+        if ((bool) $validatorErrors) {
+
+            return $this->error($validatorErrors);
+        }
+
+        $token = UserFacade::login($request);
+        if ($token) {
+
+            return $this->success($token);
+        }
+
+        return $this->error('INVALID_CREDENTIALS');
     }
 
     public function getAuthenticatedUser()
     {
-
-        return $this->jsonResponse(UserFacade::getAuthenticatedUser());
+        return $this->success(UserFacade::getAuthenticatedUser());
     }
 
     public function updateNotificationStatus()
     {
-        return $this->jsonResponse(UserFacade::updateNotificationStatus());
+        $request = request(['status', 'push_notification_token']);
+        $validatorErrors = UserFacade::validateUpdateNotifications($request);
+
+        if ((bool) $validatorErrors) {
+
+            return $this->error($validatorErrors);
+        }
+
+        $token = UserFacade::login($request);
+        if ($token) {
+
+            return $this->success($token);
+        }
+
+        return $this->error('INVALID_CREDENTIALS');
+
     }
 
     public function getTerms()
     {
-        $this->jsonResponse(['data', 'Terms of use...']);
+        $this->success('Terms of use...');
     }
 }

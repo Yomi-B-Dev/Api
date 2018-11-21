@@ -37,7 +37,7 @@ class UserHelpService
 //        $row->update($fields);
 //    }
 
-    private function validateCreate($req)
+    public function validateCreate($req)
     {
         $validator = Validator::make($req, [
             'question' => 'required|string|max:75|unique:users',
@@ -46,7 +46,6 @@ class UserHelpService
 
         if ($validator->fails())
         {
-            return ApiResponseController::error();
         }
     }
 }

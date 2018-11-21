@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateGuestHelp extends Migration
+class CreateTribesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,16 @@ class CreateGuestHelp extends Migration
      */
     public function up()
     {
-        Schema::create('guest_help', function (Blueprint $table) {
+        Schema::create('tribes', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('question');
-            $table->string('answer');
+            $table->string('name');
+            $table->unsignedInteger('leadership_id');
             $table->timestamps();
+
+            $table->foreign('leadership_id')
+                ->references('id')
+                ->on('leaderships')
+                ->onDelete('cascade');
         });
     }
 
@@ -28,6 +33,6 @@ class CreateGuestHelp extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('guest_help');
+        Schema::dropIfExists('tribes');
     }
 }

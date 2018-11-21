@@ -13,7 +13,7 @@ class CreateUserHelp extends Migration
      */
     public function up()
     {
-        Schema::create('guest_help', function (Blueprint $table) {
+        Schema::create('user_help', function (Blueprint $table) {
             $table->increments('id');
             $table->string('question');
             $table->string('answer');
@@ -26,8 +26,9 @@ class CreateUserHelp extends Migration
      *
      * @return void
      */
+
     public function down()
     {
-        //
+        Schema::dropIfExists('user_help');
     }
 }
