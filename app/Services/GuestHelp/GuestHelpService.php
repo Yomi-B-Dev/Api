@@ -3,7 +3,6 @@
 namespace App\Services\GuestHelp;
 
 use App\Http\Controllers\ApiResponseController;
-use App\Models\Entities\GuestHelp;
 use App\Repositories\GuestHelp\GuestHelpInterface;
 use Illuminate\Support\Facades\Validator;
 

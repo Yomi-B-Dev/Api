@@ -8,26 +8,27 @@ class SessionController extends ApiResponseController
 {
     public function register()
     {
-        return UserFacade::register();
+        return $this->jsonResponse(UserFacade::register());
     }
 
     public function login()
     {
-        return UserFacade::login();
+        return $this->jsonResponse(UserFacade::login());
     }
 
     public function getAuthenticatedUser()
     {
-        return UserFacade::getAuthenticatedUser();
+
+        return $this->jsonResponse(UserFacade::getAuthenticatedUser());
     }
 
     public function updateNotificationStatus()
     {
-        return UserFacade::updateNotificationStatus();
+        return $this->jsonResponse(UserFacade::updateNotificationStatus());
     }
 
     public function getTerms()
     {
-        self::success('Terms of use...');
+        $this->jsonResponse(['data', 'Terms of use...']);
     }
 }

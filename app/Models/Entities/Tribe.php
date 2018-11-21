@@ -8,6 +8,11 @@ class Tribe extends Model
 {
     public function leadership()
     {
-        return $this->hasOne('App\Models\Entities\Leadership');
+        return $this->belongsTo('App\Models\Entities\Leadership');
+    }
+
+    public function grades()
+    {
+        return $this->hasMany('App\Models\Entities\Grade');
     }
 }

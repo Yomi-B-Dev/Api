@@ -13,8 +13,28 @@ class LeadershipService
         $this->leadershipRepo = $leadershipRepo;
     }
 
-    public function get($leadershipId)
+    public function get($d)
     {
-        return $this->leadershipRepo->getById($leadershipId);
+        return $this->leadershipRepo->getById($d);
+    }
+
+    public function getAll()
+    {
+        return $this->leadershipRepo->getAll();
+    }
+
+    public function create($data)
+    {
+        return $this->leadershipRepo->create($data);
+    }
+
+    public function delete($id)
+    {
+        $this->leadershipRepo->delete($id);
+    }
+
+    public function update($inst, $fields)
+    {
+        $inst->update($fields);
     }
 }

@@ -4,18 +4,23 @@ namespace App\Http\Controllers;
 
 class ApiResponseController extends Controller
 {
-    public static function error($val = 'GENERAL_ERROR')
-    {
-        return self::jsonResponse('error', $val);
-    }
+//    protected function error($val = 'GENERAL_ERROR')
+//    {
+//        return $this->jsonResponse('error', $val);
+//    }
+//
+//    protected function success($val)
+//    {
+//        return $this->jsonResponse('data', $val);
+//    }
 
-    public static function success($val)
-    {
-        return self::jsonResponse('data', $val);
-    }
+//    private function jsonResponse($key, $value)
+//    {
+//        return response()->json([$key => $value]);
+//    }
 
-    private static function jsonResponse($key, $value)
+    protected function jsonResponse($res)
     {
-        return response()->json([$key => $value]);
+        return response()->json($res);
     }
 }

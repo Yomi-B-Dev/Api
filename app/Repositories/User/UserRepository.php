@@ -2,20 +2,20 @@
 
 namespace App\Repositories\User;
 
-use App\User;
+use Illuminate\Database\Eloquent\Model;
 
 class UserRepository implements UserInterface
 {
     protected $userModel;
 
-    public function __construct(User $user)
+    public function __construct(Model $user)
     {
         $this->userModel = $user;
     }
 
     public function register($request)
     {
-        return User::create([
+        return $this->userModel->create([
             'email' => $request['email'],
             'gov_id' => md5($request['gov_id']),
             'name' => $request['name'],
@@ -26,5 +26,20 @@ class UserRepository implements UserInterface
     public function update($user, $fields)
     {
         $user->update($fields);
+    }
+
+    public function get($id)
+    {
+        return $this->userModel->find($id);
+    }
+
+    public function getAll()
+    {
+        return $this->userModel->all();
+    }
+
+    public function delete($id)
+    {
+        return $this->userModel->destroy($id);
     }
 }

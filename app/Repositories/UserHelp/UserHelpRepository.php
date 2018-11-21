@@ -16,7 +16,8 @@ class UserHelpRepository implements UserHelpInterface
 
     public function create($data)
     {
-        return UserHelp::create($data);
+        $inst = new UserHelp($data);
+        $inst->save();
     }
 
     public function getById($guestHelpId)
@@ -29,8 +30,8 @@ class UserHelpRepository implements UserHelpInterface
         return $this->userHelpModel->all();
     }
 
-    public function update($row, $fields)
+    public function update($inst, $fields)
     {
-        $row->update($fields);
+        $inst->update($fields);
     }
 }

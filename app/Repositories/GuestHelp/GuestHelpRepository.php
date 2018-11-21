@@ -16,7 +16,8 @@ class GuestHelpRepository implements GuestHelpInterface
 
     public function create($data)
     {
-        return GuestHelp::create($data);
+        $inst = new GuestHelp($data);
+        $inst->save();
     }
 
     public function getById($guestHelpId)
@@ -29,8 +30,8 @@ class GuestHelpRepository implements GuestHelpInterface
         return $this->guestHelpModel->all();
     }
 
-    public function update($row, $fields)
+    public function update($inst, $fields)
     {
-        $row->update($fields);
+        $inst->update($fields);
     }
 }

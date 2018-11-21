@@ -13,8 +13,28 @@ class TribeRepository implements TribeInterface
         $this->tribeModel = $tribe;
     }
 
-    public function getById($tribeId)
+    public function getById($id)
     {
-        return $this->tribeModel->find($tribeId);
+        return $this->tribeModel->find($id);
+    }
+
+    public function getAll()
+    {
+        return $this->tribeModel->all();
+    }
+
+    public function create($data)
+    {
+        return $this->tribeModel->create($data);
+    }
+
+    public function delete($id)
+    {
+        $this->tribeModel->destroy($id);
+    }
+
+    public function update($inst, $fields)
+    {
+        $inst->update($fields);
     }
 }

@@ -3,11 +3,11 @@
 namespace App\Services\User;
 
 
-use App\Http\Controllers\ApiResponseController;
 use App\Repositories\User\UserInterface;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UserService
@@ -19,61 +19,79 @@ class UserService
         $this->userRepo = $userRepo;
     }
 
+    public function get($id)
+    {
+        return $this->userRepo->get($id);
+    }
+
+    public function getAll()
+    {
+        return $this->userRepo->getAll();
+    }
+
     public function login()
     {
         $credentials = request(['email', 'gov_id']);
         $credentials['gov_id'] = md5($credentials['gov_id']);
 
-        $this->validateLogin($credentials);
+        $valErr = $this->validateLogin($credentials);
+        if ((bool) $valErr) {
+
+            return ['error', $valErr];
+        }
 
         $user = User::where([
             'email' => $credentials['email'], 'gov_id' => $credentials['gov_id']
         ])->first();
 
-        if ($user)
-        {
+        if ($user) {
             $token = JWTAuth::fromUser($user);
 
-            return ApiResponseController::success($token);
+            return ['data', $token];
         }
 
-        return ApiResponseController::error('INVALID_CREDENTIALS');
+        return ['error', 'GENERAL_ERROR'];
     }
 
     public function register()
     {
         $request = request(['email', 'gov_id', 'name', 'phone', 'accepts_notifications']);
-        $this->validateRegister($request);
+        $valErr = $this->validateRegister($request);
+        if ((bool) $valErr) {
+
+            return ['error', $valErr];
+        }
+
         $user = $this->userRepo->register($request);
         $token = JWTAuth::fromUser($user);
 
-        return ApiResponseController::success($token);
+        return ['data', $token];
     }
 
     public function getAuthenticatedUser()
     {
-
         $user = JWTAuth::ParseToken()->authenticate();
 
-        return ApiResponseController::success($user);
+        return ['data', $user];
     }
 
     public function updateNotificationStatus()
     {
         $request = request(['status', 'push_notification_token']);
+        $valErr = $this->validateUpdateNotifications($request);
+        if ((bool) $valErr) {
 
-        $this->validateUpdateNotifications($request);
-
-        if ($request['status'])
-        {
-            $user = JWTAuth::ParseToken()->authenticate();
-
-            $this->userRepo->update($user, ['accepts_notifications' => Carbon::now()]);
-
-            return ApiResponseController::success('UPDATED');
+            return ['error', $valErr];
         }
 
-        return ApiResponseController::error();
+        if ($request['status']) {
+            $user = JWTAuth::ParseToken()->authenticate();
+            $this->userRepo->update($user, ['accepts_notifications' => Carbon::now()]);
+
+            return ['data', 'UPDATED'];
+        }
+
+        return ['error', 'GENERAL_ERROR'];
     }
 
     private function validateRegister($request)
@@ -86,9 +104,7 @@ class UserService
             'accepts_notifications' => 'nullable|date'
         ]);
 
-        if ($validator->fails()) {
-            return ApiResponseController::error();
-        }
+        return $validator->errors()->getMessages();
     }
 
     private function validateLogin($request)
@@ -98,18 +114,13 @@ class UserService
             'gov_id' => 'required|unique:users'
         ]);
 
-        if ($validator->fails())
-        {
-            return ApiResponseController::error();
-        }
+        return $validator->errors()->getMessages();
     }
 
     private function validateUpdateNotifications($request)
     {
         $validator = Validator::make($request, ['status' => 'required|boolean', 'push_notification_token' => 'required']);
-        if ($validator->fails())
-        {
-            return ApiResponseController::error();
-        }
+
+        return $validator->errors()->getMessages();
     }
 }

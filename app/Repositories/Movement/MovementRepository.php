@@ -13,8 +13,28 @@ class MovementRepository implements MovementInterface
         $this->movementModel = $movement;
     }
 
-    public function getById($movementId)
+    public function getById($id)
     {
-        return $this->movementModel->find($movementId);
+        return $this->movementModel->find($id);
+    }
+
+    public function getAll()
+    {
+        return $this->movementModel->all();
+    }
+
+    public function create($data)
+    {
+        return $this->movementModel->create($data);
+    }
+
+    public function delete($id)
+    {
+        $this->movementModel->destroy($id);
+    }
+
+    public function update($inst, $fields)
+    {
+        $inst->update($fields);
     }
 }

@@ -1,9 +1,24 @@
 <?php
 
+use App\Repositories\Grade\GradeRepositoryServiceProvider;
 use App\Repositories\GuestHelp\GuestHelpRepositoryServiceProvider;
+use App\Repositories\Leadership\LeadershipRepositoryServiceProvider;
+use App\Repositories\Movement\MovementRepositoryServiceProvider;
+use App\Repositories\Post\PostRepositoryServiceProvider;
+use App\Repositories\Tribe\TribeRepositoryServiceProvider;
 use App\Repositories\UserHelp\UserHelpRepositoryServiceProvider;
+use App\Services\Grade\GradeFacade;
+use App\Services\Grade\GradeServiceServiceProvider;
 use App\Services\GuestHelp\GuestHelpFacade;
 use App\Services\GuestHelp\GuestHelpServiceServiceProvider;
+use App\Services\Leadership\LeadershipFacade;
+use App\Services\Leadership\LeadershipServiceServiceProvider;
+use App\Services\Movement\MovementFacade;
+use App\Services\Movement\MovementServiceServiceProvider;
+use App\Services\Post\PostFacade;
+use App\Services\Post\PostServiceServiceProvider;
+use App\Services\Tribe\TribeFacade;
+use App\Services\Tribe\TribeServiceServiceProvider;
 use App\Services\UserHelp\UserHelpFacade;
 use App\Services\UserHelp\UserHelpServiceServiceProvider;
 
@@ -186,7 +201,16 @@ return [
         GuestHelpServiceServiceProvider::class,
         UserHelpRepositoryServiceProvider::class,
         UserHelpServiceServiceProvider::class,
-
+        MovementRepositoryServiceProvider::class,
+        MovementServiceServiceProvider::class,
+        LeadershipRepositoryServiceProvider::class,
+        LeadershipServiceServiceProvider::class,
+        TribeRepositoryServiceProvider::class,
+        TribeServiceServiceProvider::class,
+        GradeRepositoryServiceProvider::class,
+        GradeServiceServiceProvider::class,
+        PostRepositoryServiceProvider::class,
+        PostServiceServiceProvider::class
     ],
 
     /*
@@ -239,7 +263,12 @@ return [
         'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
         'UserFacade' => App\Services\User\UserFacade::class,
         'UserHelpFacade' => UserHelpFacade::class,
-        'GuestHelpFacade' => GuestHelpFacade::class
+        'GuestHelpFacade' => GuestHelpFacade::class,
+        'MovementFacade' => MovementFacade::class,
+        'LeadershipFacade' => LeadershipFacade::class,
+        'TribeFacade' => TribeFacade::class,
+        'GradeFacade' => GradeFacade::class,
+        'PostFacade' => PostFacade::class,
     ],
 
 ];

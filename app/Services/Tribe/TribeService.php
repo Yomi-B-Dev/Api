@@ -13,8 +13,28 @@ class TribeService
         $this->tribeRepo = $tribeRepo;
     }
 
-    public function get($tribeId)
+    public function get($d)
     {
-        return $this->tribeRepo->getById($tribeId);
+        return $this->tribeRepo->getById($d);
+    }
+
+    public function getAll()
+    {
+        return $this->tribeRepo->getAll();
+    }
+
+    public function create($data)
+    {
+        return $this->tribeRepo->create($data);
+    }
+
+    public function delete($id)
+    {
+        $this->tribeRepo->delete($id);
+    }
+
+    public function update($inst, $fields)
+    {
+        $inst->update($fields);
     }
 }

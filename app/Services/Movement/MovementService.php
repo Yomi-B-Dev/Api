@@ -13,8 +13,28 @@ class MovementService
         $this->movementRepo = $movementRepo;
     }
 
-    public function get($movementId)
+    public function get($d)
     {
-        return $this->movementRepo->getById($movementId);
+        return $this->movementRepo->getById($d);
+    }
+
+    public function getAll()
+    {
+        return $this->movementRepo->getAll();
+    }
+
+    public function create($data)
+    {
+        return $this->movementRepo->create($data);
+    }
+
+    public function delete($id)
+    {
+        $this->movementRepo->delete($id);
+    }
+
+    public function update($inst, $fields)
+    {
+        $inst->update($fields);
     }
 }
