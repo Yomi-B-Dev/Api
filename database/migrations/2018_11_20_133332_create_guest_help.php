@@ -16,7 +16,7 @@ class CreateGuestHelp extends Migration
         Schema::create('guest_help', function (Blueprint $table) {
             $table->increments('id');
             $table->string('question');
-            $table->string('answer');
+            $table->text('answer');
             $table->timestamps();
         });
     }

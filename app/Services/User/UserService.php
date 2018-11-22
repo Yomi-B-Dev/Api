@@ -4,10 +4,10 @@ namespace App\Services\User;
 
 
 use App\Repositories\User\UserInterface;
-use App\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use App\User;
 
 class UserService
 {
@@ -38,9 +38,8 @@ class UserService
 
     public function login($credentials)
     {
-        $user = User::where([
-            'email' => $credentials['email'], 'gov_id' => md5($credentials['gov_id'])
-        ])->first();
+        $user = User::where($credentials)
+            ->first();
 
         $token = null;
 
@@ -55,7 +54,7 @@ class UserService
     {
         $user = JWTAuth::ParseToken()->authenticate();
 
-        return $user->get(['id', 'name', 'email', 'phone', 'accepts_notifications']);
+        return $user->only(['id', 'name', 'email', 'phone', 'accepts_notifications']);
     }
 
     public function updateNotificationStatus($request)
@@ -73,10 +72,10 @@ class UserService
     public function validateRegister($request)
     {
         $validator = Validator::make($request, [
-            'email' => 'required|string|max:75|unique:users',
+            'email' => 'required|email|max:75|unique:users',
             'gov_id' => 'required|unique:users',
             'name' => 'required|string|max:25',
-            'phone' => 'required|numeric|unique:users|max:12',
+            'phone' => 'required|numeric|unique:users',
             'accepts_notifications' => 'nullable|date'
         ]);
 
@@ -86,8 +85,8 @@ class UserService
     public function validateLogin($request)
     {
         $validator = Validator::make($request, [
-            'email' => 'required|string|max:75|unique:users',
-            'gov_id' => 'required|unique:users'
+            'email' => 'required|email|max:75',
+            'gov_id' => 'required'
         ]);
 
         return $validator->errors()->getMessages();

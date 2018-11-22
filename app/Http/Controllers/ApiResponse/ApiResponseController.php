@@ -1,6 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\ApiResponse;
+
+use App\Http\Controllers\Controller;
+
 
 class ApiResponseController extends Controller
 {

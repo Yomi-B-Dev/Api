@@ -17,10 +17,10 @@ class UserRepository implements UserInterface
     {
         return $this->userModel->create([
             'email' => $request['email'],
-            'gov_id' => md5($request['gov_id']),
+            'gov_id' => $request['gov_id'],
             'name' => $request['name'],
             'phone' => $request['phone']
-            ]);
+        ]);
     }
 
     public function update($user, $fields)

@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Http\Controllers\ApiResponseController;
 use Closure;
 use Illuminate\Support\Facades\Response;
 use Tymon\JWTAuth\Exceptions\JWTException;

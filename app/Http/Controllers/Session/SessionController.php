@@ -1,17 +1,19 @@
-<?
+<?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Session;
 
 use App\Services\User\UserFacade;
+use App\Http\Controllers\ApiResponse\ApiResponseController;
 
 class SessionController extends ApiResponseController
 {
     public function register()
     {
-        $request = request()->all();
-        $validatorErrors = UserFacade::validateRegister($request);
+        $request = request(['gov_id', 'email', 'phone', 'name', 'accepts_notifications']);
+        $request['gov_id'] = md5($request['gov_id']);
 
-        if ((bool) $validatorErrors) {
+        $validatorErrors = UserFacade::validateRegister($request);
+        if ((bool)$validatorErrors) {
 
             return $this->error($validatorErrors);
         }
@@ -22,9 +24,11 @@ class SessionController extends ApiResponseController
     public function login()
     {
         $request = request(['email', 'gov_id']);
+        $request['gov_id'] = md5($request['gov_id']);
+
         $validatorErrors = UserFacade::validateLogin($request);
 
-        if ((bool) $validatorErrors) {
+        if ((bool)$validatorErrors) {
 
             return $this->error($validatorErrors);
         }
@@ -48,23 +52,18 @@ class SessionController extends ApiResponseController
         $request = request(['status', 'push_notification_token']);
         $validatorErrors = UserFacade::validateUpdateNotifications($request);
 
-        if ((bool) $validatorErrors) {
+        if ((bool)$validatorErrors) {
 
             return $this->error($validatorErrors);
         }
 
-        $token = UserFacade::login($request);
-        if ($token) {
+        $status = UserFacade::updateNotificationStatus($request);
+        if ($status) {
 
-            return $this->success($token);
+            return $this->success('UPDATED');
         }
 
-        return $this->error('INVALID_CREDENTIALS');
+        return $this->error('GENERAL_ERROR');
 
-    }
-
-    public function getTerms()
-    {
-        $this->success('Terms of use...');
     }
 }

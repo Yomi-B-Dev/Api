@@ -5,6 +5,9 @@ use App\Repositories\GuestHelp\GuestHelpRepositoryServiceProvider;
 use App\Repositories\Leadership\LeadershipRepositoryServiceProvider;
 use App\Repositories\Movement\MovementRepositoryServiceProvider;
 use App\Repositories\Post\PostRepositoryServiceProvider;
+use App\Repositories\PostImage\PostImageRepositoryServiceProvider;
+use App\Repositories\PostLink\PostLinkRepositoryServiceProvider;
+use App\Repositories\PostVideo\PostVideoRepositoryServiceProvider;
 use App\Repositories\Tribe\TribeRepositoryServiceProvider;
 use App\Repositories\UserHelp\UserHelpRepositoryServiceProvider;
 use App\Services\Grade\GradeFacade;
@@ -17,6 +20,12 @@ use App\Services\Movement\MovementFacade;
 use App\Services\Movement\MovementServiceServiceProvider;
 use App\Services\Post\PostFacade;
 use App\Services\Post\PostServiceServiceProvider;
+use App\Services\PostImage\PostImageFacade;
+use App\Services\PostImage\PostImageServiceServiceProvider;
+use App\Services\PostLink\PostLinkFacade;
+use App\Services\PostLink\PostLinkServiceServiceProvider;
+use App\Services\PostVideo\PostVideoFacade;
+use App\Services\PostVideo\PostVideoServiceServiceProvider;
 use App\Services\Tribe\TribeFacade;
 use App\Services\Tribe\TribeServiceServiceProvider;
 use App\Services\UserHelp\UserHelpFacade;
@@ -210,7 +219,13 @@ return [
         GradeRepositoryServiceProvider::class,
         GradeServiceServiceProvider::class,
         PostRepositoryServiceProvider::class,
-        PostServiceServiceProvider::class
+        PostServiceServiceProvider::class,
+        PostLinkRepositoryServiceProvider::class,
+        PostLinkServiceServiceProvider::class,
+        PostVideoRepositoryServiceProvider::class,
+        PostVideoServiceServiceProvider::class,
+        PostImageRepositoryServiceProvider::class,
+        PostImageServiceServiceProvider::class,
     ],
 
     /*
@@ -269,6 +284,9 @@ return [
         'TribeFacade' => TribeFacade::class,
         'GradeFacade' => GradeFacade::class,
         'PostFacade' => PostFacade::class,
+        'PostLinkFacade' => PostLinkFacade::class,
+        'PostVideoFacade' => PostVideoFacade::class,
+        'PostImageFacade' => PostImageFacade::class,
     ],
 
 ];

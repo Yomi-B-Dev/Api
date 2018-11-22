@@ -11,41 +11,50 @@ use Illuminate\Support\Facades\Route;
 | routes are loaded by the RouteServiceProvider within a group which
 | is assigned the "api" middleware group. Enjoy building your API!
 |
-*/
+ */
 
-Route::post('/auth/register', 'SessionController@register');
-Route::post('/auth/login', 'SessionController@login');
-Route::get('/terms', 'SessionController@getTerms');
+Route::group([
+    'namespace' => 'Session',
+    'prefix' => 'auth/'
+], function () {
+    Route::post('register', 'SessionController@register');
+    Route::post('login', 'SessionController@login');
 
-Route::get('/questions-answers/help', 'QuestionsAndAnswersController@getQuestionsAnswersGuest');
+    Route::middleware('jwt')->group(function () {
+        Route::get('user', 'SessionController@getAuthenticatedUser');
+        Route::post('update-notification-status', 'SessionController@updateNotificationStatus');
+    });
+});
+
+Route::group(['namespace' => 'GeneralData'], function () {
+    Route::group(['prefix' => 'questions-answers'], function () {
+        Route::get('help', 'GeneralDataController@getQuestionsAnswersUser')
+            ->middleware('jwt');
+        Route::get('login', 'GeneralDataController@getQuestionsAnswersGuest');
+    });
+    Route::get('terms', 'GeneralDataController@getTerms');
+});
+
+Route::group([
+    'namespace' => 'Post',
+    'prefix' => 'post/',
+    'middleware' => 'jwt'
+], function () {
+
+     Route::post('report', 'PostController@report');
+     Route::get('get-by-user-id', 'PostController@getByPage'); // 10 posts per page
+//     Route::get('get-by-user-id', 'PostController@get'); // All posts
+//     Route::post('update-post', 'PostController@get');
+//     Route::post('', 'PostController@get');
+//     Route::delete('', 'PostController@get');
+});
+
+
+
+
 
 //Route::post('/delete-token', '');
-
-//Route::group(['middleware' => 'jwt', 'prefix' => 'auth', 'namespace'])
-Route::middleware('jwt')->group(function () {
-    Route::get('/auth/user', 'SessionController@getAuthenticatedUser');
-    Route::post('/auth/update-notification-status', 'SessionController@updateNotificationStatus');
-
-    Route::get('/questions-answers/login', 'QuestionsAndAnswersController@getQuestionsAnswersUser');
-
-    Route::post('/post/report', 'PostController@get');
-
-
-
-
-
-
-
-
-
-
-
-
-//    Route::get('/post/get-by-user-id?page={id}', ''); // 10 posts per page
-//    Route::get('/post/get-by-user-id', ''); // All posts
-//    Route::post('/post/update-post/', '');
-//    Route::post('/post', '');
-//    Route::delete('/post', '');
+//
 //
 //    Route::get('/get-all/movement', '');
 //
@@ -54,5 +63,4 @@ Route::middleware('jwt')->group(function () {
 //    Route::get('/get-all/tribe/?leadership_id={id}', '');
 //
 //    Route::get('/get-user-hierarchy', '');
-//    Route::get('/get-user-hierarchy', '');
-});
+

@@ -17,4 +17,14 @@ class PostRepository implements PostInterface
     {
         return $this->postModel->find($postId);
     }
+
+    public function getByPage($page, $postsPerPage)
+    {
+        return $this->postModel->skip($page * $postsPerPage)->take($postsPerPage)->get();
+    }
+
+    public function getAll()
+    {
+        return $this->postModel->all();
+    }
 }

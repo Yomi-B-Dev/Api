@@ -27,7 +27,7 @@ class GuestHelpRepository implements GuestHelpInterface
 
     public function getAll()
     {
-        return $this->guestHelpModel->all();
+        return $this->guestHelpModel->all('question', 'answer');
     }
 
     public function update($inst, $fields)

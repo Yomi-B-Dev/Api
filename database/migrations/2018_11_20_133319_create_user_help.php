@@ -16,7 +16,7 @@ class CreateUserHelp extends Migration
         Schema::create('user_help', function (Blueprint $table) {
             $table->increments('id');
             $table->string('question');
-            $table->string('answer');
+            $table->text('answer');
             $table->timestamps();
         });
     }
