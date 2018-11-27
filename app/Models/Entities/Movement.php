@@ -10,4 +10,15 @@ class Movement extends Model
     {
         return $this->hasMany('App\Models\Entities\Leadership');
     }
+
+    public function tribes()
+    {
+        return $this->hasManyThrough('App\Models\Entities\Tribe', 'App\Models\Entities\Leadership');
+    }
+
+    public function users()
+    {
+        return $this->hasManyThrough('App\User', 'App\Movement_User',
+            'movement_id', 'id', 'id', 'user_id');
+    }
 }

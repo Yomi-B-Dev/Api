@@ -4,6 +4,8 @@ namespace App\Services\Post;
 
 
 use App\Repositories\Post\PostInterface;
+use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Validator;
 
 class PostService
 {
@@ -23,85 +25,76 @@ class PostService
     {
         $posts = null;
         $totPages = (integer)ceil(($this->postRepo->getAll()->count() / 10));
-
         if ($page) {
             $posts = $this->postRepo->getByPage($page, 10);
         } else {
             $posts = $this->postRepo->getAll();
         }
 
-        $items = [];
-
-        foreach ($posts as $post)
-        {
-            dd($post->user->all(['id']));
-            array_push($items, $this->extractItem($post));
-        }
-
-//        dd($items);
-
         return [
             'totalPages' => $totPages,
-            'items' => $items
+            'items' => $posts->map([$this, 'extractItem'])
         ];
     }
 
-    private function extractItem($el)
+    function extractItem($post)
     {
+        $user = $post->user;
+
         return [
-            'id' => $el['id'],
-            'view_count' => $el['view_count'],
-            'target' => $el['target'],
+            'id' => $post['id'],
+            'view_count' => $post['view_count'],
+            'target' => $post['target'],
             'author' => [
-                $el->user(['id', 'name'])
+                'id' => $user->id,
+                'name' => $user->name
             ],
-            'title' => $el['title'],
-            'content' => $el['content'],
-            'timestamp' => $el['timestamp'],
-            'type' => $el['type'],
-            'link' => $this->extractLink($el),
-            'media' => $this->extractMedia($el)
+            'title' => $post['title'],
+            'content' => $post['content'],
+            'timestamp' => $post['timestamp'],
+            'type' => $post['type'],
+            'link' => $this->extractLink($post),
+            'media' => $this->extractMedia($post)
         ];
     }
 
-    private function extractLink($el)
+    private function extractLink($post)
     {
-        $link = $el->postLink();
+        $link = $post->postLink;
         if ($link) {
 
             return [
-                'title' => $link['title'],
-                'url' => $link['url'],
+                'title' => $link->title,
+                'url' => $link->url
             ];
-
         }
+
+        return null;
     }
 
-    private function extractMedia($el)
+    private function extractMedia($post)
     {
-        $video = $el->postVideo();
+        $video = $post->postVideo;
         if ($video) {
 
             return [
                 'type' => 'video',
                 'urls' => [
-                    'url' => $video['url'],
-                    'thumbnail' => $video['thumbnail'],
+                    'url' => $video->url,
+                    'thumbnail' => $video->thumbnail
                 ]
             ];
 
         }
 
-        $images = $el->postImage();
-        if ($images) {
-            $urls = $images->all('url');
+        $images = $post->postImages;
 
-            return [
-                'type' => 'images',
-                'urls' => $urls
-            ];
+        return $images ? $images->pluck('url') : null;
+    }
 
-        }
+    public function isInputPositiveIntOrNull($input)
+    {
+        return is_null($input) or (is_numeric($input) and ($input == (integer)$input) and $input > 0);
     }
 
 }

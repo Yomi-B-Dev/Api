@@ -1,0 +1,19 @@
+<?php
+
+use Illuminate\Database\Seeder;
+use Faker\Provider\Lorem;
+
+class GeneralDataSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        DB::table('general_data')->insert([
+            'terms' => Lorem::text()
+        ]);
+    }
+}

@@ -10,4 +10,10 @@ class Grade extends Model
     {
         return $this->hasOne('App\Models\Entities\Tribe');
     }
+
+    public function users()
+    {
+        return $this->hasManyThrough('App\User', 'App\Grade_User',
+            'grade_id', 'id', 'id', 'user_id');
+    }
 }

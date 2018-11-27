@@ -35,11 +35,7 @@ Route::group(['namespace' => 'GeneralData'], function () {
     Route::get('terms', 'GeneralDataController@getTerms');
 });
 
-Route::group([
-    'namespace' => 'Post',
-    'prefix' => 'post/',
-    'middleware' => 'jwt'
-], function () {
+Route::group(['namespace' => 'Post', 'prefix' => 'post/', 'middleware' => 'jwt'], function () {
 
      Route::post('report', 'PostController@report');
      Route::get('get-by-user-id', 'PostController@getByPage'); // 10 posts per page

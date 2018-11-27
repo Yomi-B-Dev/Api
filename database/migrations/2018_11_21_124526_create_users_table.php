@@ -1,5 +1,5 @@
-<?php
 
+<?php
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -20,12 +20,12 @@ class CreateUsersTable extends Migration
             $table->timestamp('accepts_notifications')->nullable();
             $table->string('gov_id')->unique();
             $table->string('phone')->unique();
-            $table->unsignedInteger('role_id')->default(1);
+            $table->unsignedTinyInteger('role');
+
             // $table->rememberToken();
             $table->timestamps();
         });
     }
-
     /**
      * Reverse the migrations.
      *

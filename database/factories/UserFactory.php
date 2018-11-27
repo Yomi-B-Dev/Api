@@ -23,7 +23,7 @@ $factory->define(App\User::class, function (Faker $faker) use ($gov_id) {
         'email' => $faker->unique()->safeEmail,
         'gov_id' => md5($gov_id->current()),
         'phone' => $faker->unique()->phoneNumber,
-        'role_id' => rand(0, 3) ? 1 : 2
+        'role' => rand(0, 3)
     ];
 });
 

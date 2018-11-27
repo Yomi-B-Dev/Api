@@ -8,7 +8,6 @@ $factory->define(Post::class, function (Faker $faker) {
     return [
         'view_count' => $faker->numberBetween(1, 50),
         'target' => $faker->word(),
-        'author' => $faker->numberBetween(1, 50),
         'title' => $faker->sentence(2),
         'content' => $faker->paragraph(),
         'timestamp' => Carbon::now(),

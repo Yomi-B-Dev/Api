@@ -15,4 +15,10 @@ class Tribe extends Model
     {
         return $this->hasMany('App\Models\Entities\Grade');
     }
+
+    public function users()
+    {
+        return $this->hasManyThrough('App\User', 'App\Tribe_User',
+            'tribe_id', 'id', 'id', 'user_id');
+    }
 }

@@ -8,6 +8,5 @@ $factory->define(PostLink::class, function (Faker $faker) {
     return [
         'title' => $faker->sentence(2),
         'url' => $faker->imageUrl(),
-        'post_id' => factory(Post::class)->create()->id,
     ];
 });

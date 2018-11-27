@@ -13,6 +13,12 @@ class Leadership extends Model
 
     public function tribes()
     {
-        return $this->hasMany('App\Models\Entities\Tribes');
+        return $this->hasMany('App\Models\Entities\Tribe');
+    }
+
+    public function users()
+    {
+        return $this->hasManyThrough('App\User', 'App\Leadership_User',
+            'leadership_id', 'id', 'id', 'user_id');
     }
 }

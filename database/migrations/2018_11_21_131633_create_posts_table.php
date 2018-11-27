@@ -17,13 +17,13 @@ class CreatePostsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('view_count');
             $table->string('target');
-            $table->unsignedInteger('author');
+            $table->unsignedInteger('author_id');
             $table->string('title');
             $table->text('content');
             $table->dateTime('timestamp');
             $table->string('type');
 
-            $table->foreign('author')
+            $table->foreign('author_id')
                 ->references('id')
                 ->on('users')
                 ->onDelete('cascade');
