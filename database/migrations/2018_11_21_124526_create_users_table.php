@@ -20,7 +20,7 @@ class CreateUsersTable extends Migration
             $table->timestamp('accepts_notifications')->nullable();
             $table->string('gov_id')->unique();
             $table->string('phone')->unique();
-            $table->unsignedTinyInteger('role');
+            $table->unsignedTinyInteger('role_id');
 
             // $table->rememberToken();
             $table->timestamps();

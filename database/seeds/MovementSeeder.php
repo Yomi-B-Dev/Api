@@ -45,13 +45,13 @@ class MovementSeeder extends Seeder
             $post->postLink()->save(factory(App\Models\Entities\PostLink::class)->create([
                 'post_id' => $post_id
             ]));
-//            rand(0, 1) ?
-//                $post->postImages()->saveMany(factory(App\Models\Entities\PostImage::class, rand(1, 3))->create([
-//                    'post_id' => $post_id
-//                ])) :
-//                $post->postVideo()->save(App\Models\Entities\PostVideo::class)->create([
-//                    'post_id' => $post_id
-//                ]);
+            rand(0, 1) ?
+                $post->postImages()->saveMany(factory(App\Models\Entities\PostImage::class, rand(1, 3))->create([
+                    'post_id' => $post_id
+                ])) :
+                $post->postVideo()->save(App\Models\Entities\PostVideo::class)->create([
+                    'post_id' => $post_id
+                ]);
         });
     }
 

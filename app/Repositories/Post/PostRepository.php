@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Post;
 
+use App\PostAudience;
 use Illuminate\Database\Eloquent\Model;
 
 class PostRepository implements PostInterface
@@ -26,5 +27,25 @@ class PostRepository implements PostInterface
     public function getAll()
     {
         return $this->postModel->all();
+    }
+
+    public function create($post)
+    {
+       return $this->postModel->create($post);
+    }
+
+    public function update($post, $values)
+    {
+        return $post->update($values);
+    }
+
+    public function delete($id)
+    {
+        return $this->postModel->find($id)->delete();
+    }
+
+    public function getAllowed($user)
+    {
+//        return $this->postModel->where()->get();
     }
 }

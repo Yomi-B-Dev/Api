@@ -21,6 +21,7 @@ class PostController extends ApiResponseController
 
     public function getByPage()
     {
+
         $page = request()->query('page');
 
         return PostFacade::isInputPositiveIntOrNull($page) ?

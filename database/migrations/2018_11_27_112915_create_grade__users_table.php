@@ -22,6 +22,11 @@ class CreateGradeUsersTable extends Migration
                 ->references('id')
                 ->on('grades')
                 ->onDelete('cascade');
+
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
         });
     }
 
